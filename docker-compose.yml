@@ -1,0 +1,133 @@
+services:
+  librechat:
+    container_name: newchatlaw-librechat
+    image: registry.librechat.ai/danny-avila/librechat-dev:latest
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - meilisearch
+      - vectordb
+      - rag_api
+      - pgmcp
+    ports:
+      - "3880:3080"
+    environment:
+      HOST: 0.0.0.0
+      MONGO_URI: mongodb://mongodb:27017/LibreChat
+      MEILI_HOST: http://meilisearch:7700
+      RAG_PORT: ${RAG_PORT}
+      RAG_API_URL: http://rag_api:${RAG_PORT}
+      CONFIG_PATH: /app/librechat.yaml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - type: bind
+        source: ./.env
+        target: /app/.env
+        read_only: true
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+        read_only: true
+      - librechat_images:/app/client/public/images
+      - librechat_uploads:/app/uploads
+      - librechat_logs:/app/logs
+
+  mongodb:
+    container_name: newchatlaw-mongodb
+    image: mongo:8.0.17
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    command: mongod --noauth
+
+  meilisearch:
+    container_name: newchatlaw-meilisearch
+    image: getmeili/meilisearch:v1.35.1
+    restart: unless-stopped
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+    volumes:
+      - meili_data:/meili_data
+
+  vectordb:
+    container_name: newchatlaw-vectordb
+    image: pgvector/pgvector:0.8.0-pg15-trixie
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - vectordb_data:/var/lib/postgresql/data
+
+  rag_api:
+    container_name: newchatlaw-rag-api
+    image: registry.librechat.ai/danny-avila/librechat-rag-api-dev-lite:latest
+    restart: unless-stopped
+    depends_on:
+      - vectordb
+    environment:
+      DB_HOST: vectordb
+      DB_PORT: 5432
+      RAG_PORT: ${RAG_PORT}
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    env_file:
+      - .env
+
+  postgres:
+    container_name: newchatlaw-postgres
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_RO_USER: ${POSTGRES_RO_USER}
+      POSTGRES_RO_PASSWORD: ${POSTGRES_RO_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - type: bind
+        source: ./postgres-init
+        target: /docker-entrypoint-initdb.d
+        read_only: true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  pgmcp:
+    container_name: newchatlaw-pgmcp
+    build:
+      context: ./pgmcp-local
+    image: newchatlaw-pgmcp:local
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "38081:8080"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_RO_USER}:${POSTGRES_RO_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      OPENAI_API_KEY: lmstudio
+      OPENAI_MODEL: openai/gpt-oss-20b
+      OPENAI_BASE_URL: http://host.docker.internal:1234/v1
+      HTTP_ADDR: ${PGMCP_HTTP_ADDR}
+      HTTP_PATH: ${PGMCP_HTTP_PATH}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  librechat_images:
+  librechat_uploads:
+  librechat_logs:
+  mongodb_data:
+  meili_data:
+  vectordb_data:
+  postgres_data:
