@@ -1,0 +1,16 @@
+Total messages: 4 (Errors: 1, Warnings: 0)
+
+[LOG] Token is not present. User is not authenticated. @ http://localhost:3880/assets/index.qzvMtg7P.js:1
+[ERROR] Error parsing localStorage key "lang", `savedValue`: defaultValue, error: SyntaxError: Unexpected token 'a', "ar-EG" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at Ne.effects_UNSTABLE (http://localhost:3880/assets/index.qzvMtg7P.js:2:440158)
+    at Object.init (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:238886)
+    at initializeNodeIfNewToStore (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:180988)
+    at getNodeLoadable (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:181319)
+    at getRecoilValueAsLoadable (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:184451)
+    at http://localhost:3880/assets/vendor.D03N9B4Q.js:1:210377
+    at http://localhost:3880/assets/vendor.D03N9B4Q.js:1:210485
+    at Object.useSyncExternalStore (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:88433)
+    at react_production_min.useSyncExternalStore (http://localhost:3880/assets/vendor.D03N9B4Q.js:1:8577) @ http://localhost:3880/assets/index.qzvMtg7P.js:1
+[LOG] Token is not present. User is not authenticated. @ http://localhost:3880/assets/index.qzvMtg7P.js:1
+[LOG] Token is not present. User is not authenticated. @ http://localhost:3880/assets/index.qzvMtg7P.js:1

@@ -1,7 +1,10 @@
 services:
   librechat:
     container_name: newchatlaw-librechat
-    image: registry.librechat.ai/danny-avila/librechat-dev:latest
+    build:
+      context: .
+      dockerfile: docker/librechat-custom/Dockerfile
+    image: newchatlaw-librechat:local
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -114,7 +117,7 @@ services:
     ports:
       - "38081:8080"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_RO_USER}:${POSTGRES_RO_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      DATABASE_URL: ${DATABASE_URL}
       OPENAI_API_KEY: lmstudio
       OPENAI_MODEL: openai/gpt-oss-20b
       OPENAI_BASE_URL: http://host.docker.internal:1234/v1
