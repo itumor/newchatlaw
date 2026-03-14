@@ -98,18 +98,16 @@ From [`docker-compose.yml`](/Users/eramadan/GitRepo/newchatlaw/docker-compose.ym
 - `OPENAI_BASE_URL` pointing to `http://host.docker.internal:1234/v1`.
 - `OPENAI_MODEL` set to `openai/gpt-oss-20b`.
 
-### Architectural discrepancy
+### Current default runtime
 
-The compose file defines a local `postgres` container, but the active `DATABASE_URL` in `pgmcp` is currently set to a Neon-hosted PostgreSQL instance, while the local database URL is commented out.
-
-That means the current runtime architecture is:
+The local stack now defaults `pgmcp` to the repository's own `postgres` container:
 
 - LibreChat local
 - PGMCP local
-- LLM endpoint on the host machine
-- PostgreSQL potentially remote
+- PostgreSQL local
+- optional OpenAI-compatible model endpoint on the host machine for natural-language SQL generation
 
-Rather than fully self-contained local data access.
+That makes the analytics and BI flow reproducible with the seeded sample data out of the box.
 
 ## Component Architecture
 

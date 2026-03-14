@@ -121,6 +121,7 @@ services:
       OPENAI_API_KEY: lmstudio
       OPENAI_MODEL: openai/gpt-oss-20b
       OPENAI_BASE_URL: http://host.docker.internal:1234/v1
+      BI_BASE_URL: ${BI_BASE_URL}
       HTTP_ADDR: ${PGMCP_HTTP_ADDR}
       HTTP_PATH: ${PGMCP_HTTP_PATH}
     extra_hosts:
