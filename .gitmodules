@@ -1,0 +1,3 @@
+[submodule "pgmcp-local"]
+	path = pgmcp-local
+	url = git@github.com:itumor/pgmcp-local.git
