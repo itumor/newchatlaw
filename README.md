@@ -1,6 +1,7 @@
 # how to run local docker
 ```bash
 #RM pgmcp-local
+git pull
 git rm --cached pgmcp-local
 rm -rf .git/modules/pgmcp-local
 rm -r pgmcp-local
