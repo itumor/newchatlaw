@@ -1,3 +1,18 @@
+# how to run local docker
+```bash
+#RM pgmcp-local
+git rm --cached pgmcp-local
+rm -rf .git/modules/pgmcp-local
+rm -r pgmcp-local
+rmdir pgmcp-local
+# Re-add properly
+git submodule add git@github.com:itumor/pgmcp-local.git pgmcp-local
+# start 
+docker compose up -d
+```
+
+
+
 # newchatlaw
 
 Local Docker stack for testing LibreChat against a PostgreSQL MCP server.
