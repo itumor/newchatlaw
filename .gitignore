@@ -1,3 +1,16 @@
 .env
 .env.local
 .env.*.local
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
+
+# Terraform local/runtime files
+terraform/.terraform/
+terraform/terraform.tfvars
+terraform/id_newchatlaw
+terraform/id_newchatlaw.pub
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/crash.log

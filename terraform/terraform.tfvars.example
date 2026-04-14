@@ -1,0 +1,9 @@
+repo_url        = "https://github.com/itumor/newchatlaw.git"
+public_key_path = "./id_newchatlaw.pub"
+
+# Optional overrides:
+# region        = "eu-central-1"
+# instance_type = "t3.micro"
+# root_volume_size_gb = 30
+# swap_size_gb = 4
+# name_prefix   = "newchatlaw"
