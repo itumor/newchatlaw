@@ -20,7 +20,7 @@ Local Docker stack for testing LibreChat against a PostgreSQL MCP server.
 
 ## Services
 
-- LibreChat: `http://localhost:3880`
+- LibreChat: `http://localhost`
 - PostgreSQL: `postgresql://postgres:postgres@localhost:35432/app`
 - PostgreSQL MCP endpoint: `http://localhost:38081/mcp`
 
@@ -113,7 +113,7 @@ If your model reliably performs tool calls, LibreChat can invoke the new `chart`
 
 ## Verified LibreChat Agent API
 
-I verified this against the running LibreChat instance at `http://localhost:3880`.
+I verified this against the running LibreChat instance at `http://localhost`.
 
 What works right now:
 
@@ -130,7 +130,7 @@ What did not work in this setup:
 Store the live key outside git, for example in `.env.local`:
 
 ```bash
-export LIBRECHAT_AGENT_BASE_URL=http://localhost:3880
+export LIBRECHAT_AGENT_BASE_URL=http://localhost
 export LIBRECHAT_AGENT_API_KEY=replace_with_real_agent_api_key
 export LIBRECHAT_AGENT_MODEL_HAIKU=agent_FCpGDtKOPOczIlqGUPm_p
 export LIBRECHAT_AGENT_RECURSION_LIMIT=60
@@ -139,14 +139,14 @@ export LIBRECHAT_AGENT_RECURSION_LIMIT=60
 Confirmed model listing:
 
 ```bash
-curl http://localhost:3880/api/agents/v1/models \
+curl http://localhost/api/agents/v1/models \
   -H "Authorization: Bearer $LIBRECHAT_AGENT_API_KEY"
 ```
 
 Confirmed agent invocation:
 
 ```bash
-curl -X POST http://localhost:3880/api/agents/v1/chat/completions \
+curl -X POST http://localhost/api/agents/v1/chat/completions \
   -H "Authorization: Bearer $LIBRECHAT_AGENT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

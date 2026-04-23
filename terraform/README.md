@@ -4,16 +4,16 @@ This folder creates the cheapest simple AWS deployment shape for this repo:
 
 - one EC2 instance
 - one Elastic IP
-- one security group exposing SSH, HTTP, HTTPS, and the current LibreChat host port `3880`
+- one security group exposing SSH, HTTP, and HTTPS
 - Docker Compose bootstrap from user-data
 
-The current `docker-compose.yml` publishes LibreChat on host port `3880`, so Terraform outputs:
+The current `docker-compose.yml` publishes LibreChat on standard HTTP port `80`, so Terraform outputs:
 
 ```text
-http://<elastic-ip>:3880
+http://<elastic-ip>
 ```
 
-Ports `80` and `443` are open because this setup requested them, but nothing in the current Compose stack listens on those ports unless you add a reverse proxy or change the Compose port mapping.
+Port `3880` is intentionally not exposed publicly because the deployment must work without custom firewall ports. Port `443` remains allowed by the security group, but no service listens on it unless HTTPS termination is added later.
 
 ## Credentials
 
@@ -71,5 +71,6 @@ Do not put `.env` contents in Terraform variables, user-data, or state.
 
 - SSH is open by default.
 - No DNS or HTTPS termination is configured.
+- Because the app is served over public HTTP only, browser secure-context features such as WebCrypto may still fail.
 - No backups, monitoring, autoscaling, or IAM hardening is included.
 - The HTTPS clone assumes this repo and its submodules are reachable from EC2. If the submodule remains SSH-only or private, bootstrap cloning will fail until a deploy key or token-based flow is added.

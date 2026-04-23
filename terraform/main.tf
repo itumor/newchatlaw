@@ -56,14 +56,6 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description = "LibreChat compose host port"
-    from_port   = 3880
-    to_port     = 3880
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -154,6 +146,6 @@ output "public_ip" {
 }
 
 output "url" {
-  description = "LibreChat URL exposed by the existing Docker Compose host port."
-  value       = "http://${aws_eip.app.public_ip}:3880"
+  description = "LibreChat URL exposed on standard HTTP port 80."
+  value       = "http://${aws_eip.app.public_ip}"
 }

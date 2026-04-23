@@ -13,7 +13,7 @@ services:
       - rag_api
       - pgmcp
     ports:
-      - "3880:3080"
+      - "80:3080"
     environment:
       HOST: 0.0.0.0
       MONGO_URI: mongodb://mongodb:27017/LibreChat

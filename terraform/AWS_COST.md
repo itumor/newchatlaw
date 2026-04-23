@@ -8,7 +8,7 @@ This estimate is for the currently deployed minimal Terraform setup:
 - EC2 instance: `t3.large`
 - Root EBS volume: `30 GiB gp3`
 - Public IPv4 / Elastic IP: `1`
-- App URL: `http://44.228.87.35:3880`
+- App URL: `http://44.228.87.35`
 
 ## Estimated Cost
 
